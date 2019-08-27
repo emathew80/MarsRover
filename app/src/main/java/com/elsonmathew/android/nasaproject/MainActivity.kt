@@ -18,7 +18,8 @@ class MainActivity : AppCompatActivity() {
 		val cameras = listOf("Front Hazard Avoidance Camera", "Rear Hazard Avoidance Camera", "Mast Camera",
 			"Chemistry and Camera Complex", "Mars Hand Lens Imager", "Mars Descent Imager", "Navigation Camera", "Panoramic Camera")
 		// Mars Rover Dropdown
-		val roverDropdown = populateDropDownMenu(this, rovers)
+		val roverDropdown = populateDropDownMenu(this, R.id.filled_exposed_dropdown, rovers)
+		val camDropDown = populateDropDownMenu(this, R.id.camera_dropdown, cameras)
 		roverDropdown?.onItemClickListener = AdapterView.OnItemClickListener{
 				parent,view,position,id->
 			val selectedItem = parent.getItemAtPosition(position).toString()
@@ -28,9 +29,9 @@ class MainActivity : AppCompatActivity() {
 		// Camera Dropdown
 	}
 
-	private fun populateDropDownMenu(context: Context, spinnerList: List<String>): AutoCompleteTextView? {
+	private fun populateDropDownMenu(context: Context, resId: Int, spinnerList: List<String>): AutoCompleteTextView? {
 		val arrayAdapter = ArrayAdapter(context, R.layout.dropdown_menu_popup_item, spinnerList)
-		val dropdown = findViewById<AutoCompleteTextView>(R.id.filled_exposed_dropdown)
+		val dropdown = findViewById<AutoCompleteTextView>(resId)
 		dropdown.setAdapter(arrayAdapter)
 		return dropdown
 	}
