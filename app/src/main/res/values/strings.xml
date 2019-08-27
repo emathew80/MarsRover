@@ -1,3 +1,4 @@
 <resources>
-    <string name="app_name">NASAProject</string>
+    <string name="app_name">Mars Rover</string>
+    <string name="mars_rover">Choose a Mars Rover</string>
 </resources>
