@@ -1,4 +1,9 @@
 <resources>
-    <string name="app_name">Mars Rover</string>
+    <string name="app_name">Explore Mars</string>
     <string name="mars_rover">Choose a Mars Rover</string>
+    <string name="pick_date">Choose An Earth Date (Optional)</string>
+    <string name="chooseRover">Choose a Mars Rover</string>
+    <string name="chooseCamera">Choose a Camera</string>
+    <string name="custom_content_desc">calendar</string>
+    <string name="showPhotos">Show Photos</string>
 </resources>
