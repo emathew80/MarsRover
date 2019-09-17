@@ -3,7 +3,11 @@
     <string name="mars_rover">Choose a Mars Rover</string>
     <string name="pick_date">Choose An Earth Date (Optional)</string>
     <string name="chooseRover">Choose a Mars Rover</string>
-    <string name="chooseCamera">Choose a Camera</string>
+    <string name="chooseCamera">Choose a Camera (Optional)</string>
     <string name="custom_content_desc">calendar</string>
     <string name="showPhotos">Show Photos</string>
+    <string name="rover">Rover</string>
+    <string name="cam">Camera</string>
+    <string name="select_sol">Select a Sol</string>
+    <string name="select_sol_date">Select a sol (Martian rotation or day)</string>
 </resources>
