@@ -28,19 +28,11 @@ import android.widget.ProgressBar
 
 class MainActivity : AppCompatActivity() {
 
-
 	private lateinit var progressBar: ProgressBar
 	private var roverDropdown: AutoCompleteTextView? = null
 	private var cam_dropdown: AutoCompleteTextView? = null
 	private var sol_dropdown: AutoCompleteTextView? = null
 	private lateinit var photoManifest: PhotoManifest
-	private val camMap = Cameras.values().associateBy(Cameras::camName)
-	fun fromCamName(cam: String) = camMap[cam]
-
-	private val roverMap = Rovers.values().associateBy(Rovers::roverName)
-	fun fromRoverName(roverName: String) = roverMap[roverName]
-
-	var selectedDateText: String? = null
 
 	val nasaPhotosService by lazy {
 		NasaPhotosApiService.create()
@@ -161,7 +153,7 @@ class MainActivity : AppCompatActivity() {
 
 	private fun showResult(photos: List<Photo>) {
 		if (photos.isEmpty()) {
-			Toast.makeText(applicationContext,"There are no images for this rover on $selectedDateText ",Toast.LENGTH_LONG).show()
+			Toast.makeText(applicationContext,"There are no images for this rover on ${sol_dropdown?.text.toString()} ",Toast.LENGTH_LONG).show()
 		}
 		print(photos)
 
