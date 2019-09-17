@@ -8,7 +8,6 @@ import android.widget.AdapterView
 import android.widget.ArrayAdapter
 import android.widget.AutoCompleteTextView
 import android.widget.Toast
-import com.elsonmathew.android.nasaproject.NasaProjectEnums.*
 import com.elsonmathew.android.nasaproject.R
 import com.elsonmathew.android.nasaproject.interfaces.NasaPhotosApiService
 import com.elsonmathew.android.nasaproject.interfaces.NasaRoverManifestApiService
@@ -57,7 +56,7 @@ class MainActivity : AppCompatActivity() {
 
 		camTextInputLayout = findViewById(R.id.cam_dropdown_text_input_layout)
 		solTextInputLayout = findViewById<TextInputLayout>(R.id.sol)
-		val rovers = listOf(Rovers.CURIOSITY.roverName, Rovers.OPPORTUNITY.roverName, Rovers.SPIRIT.roverName)
+		val rovers = listOf("Curiosity", "Opportunity", "Spirit")
 		// Mars Rover Dropdown
 		 roverDropdown = populateDropDownMenu(this, R.id.rover_dropdown, rovers)
 		roverDropdown?.onItemClickListener = AdapterView.OnItemClickListener{ parent,view,position,id->
