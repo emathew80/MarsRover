@@ -1,6 +1,7 @@
 package com.elsonmathew.android.nasaproject.activities
 
 import android.content.Context
+import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.view.View
@@ -20,9 +21,7 @@ import io.reactivex.disposables.Disposable
 import io.reactivex.schedulers.Schedulers
 import kotlinx.android.synthetic.main.activity_main.*
 import android.widget.ProgressBar
-
-
-
+import java.io.Serializable
 
 
 class MainActivity : AppCompatActivity() {
@@ -32,6 +31,7 @@ class MainActivity : AppCompatActivity() {
 	private var cam_dropdown: AutoCompleteTextView? = null
 	private var sol_dropdown: AutoCompleteTextView? = null
 	private lateinit var photoManifest: PhotoManifest
+
 
 	val nasaPhotosService by lazy {
 		NasaPhotosApiService.create()
@@ -110,6 +110,7 @@ class MainActivity : AppCompatActivity() {
 			val sol = sol_dropdown?.text.toString()
 
 			beginSearch(rover, camera , sol)
+
 		}
 
 	}
@@ -134,6 +135,7 @@ class MainActivity : AppCompatActivity() {
 	}
 
 	private fun beginSearch(rover: String, cam: String, sol: String) {
+		progressBar.visibility = View.VISIBLE
 		nasaPhotosDisposable =
 		nasaPhotosService.getRoverPhotos(rover, sol, cam)
 			.subscribeOn(Schedulers.io())
@@ -145,16 +147,22 @@ class MainActivity : AppCompatActivity() {
 	}
 
 	private fun showError(message: String?) {
+		progressBar.visibility = View.INVISIBLE
+
 		print(message)
 
 
 	}
 
-	private fun showResult(photos: List<Photo>) {
+	private fun showResult(photos: ArrayList<Photo>) {
 		if (photos.isEmpty()) {
 			Toast.makeText(applicationContext,"There are no images for this rover on ${sol_dropdown?.text.toString()} ",Toast.LENGTH_LONG).show()
 		}
+		progressBar.visibility = View.INVISIBLE
+
 		print(photos)
+
+		startActivity(ResultsActivity.getRegisterIntent(this, photos))
 
 	}
 }

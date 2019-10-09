@@ -1,4 +1,4 @@
 package com.elsonmathew.android.nasaproject.models
 
-data class NasaPhotosJsonModel(val photos: List<Photo>)
+data class NasaPhotosJsonModel(val photos: ArrayList<Photo>)
 

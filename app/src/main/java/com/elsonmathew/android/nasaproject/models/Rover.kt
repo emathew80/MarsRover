@@ -1,5 +1,9 @@
 package com.elsonmathew.android.nasaproject.models
 
+import android.os.Parcelable
+import kotlinx.android.parcel.Parcelize
+
+@Parcelize
 data class Rover(
     val cameras: List<CameraX>,
     val id: Int,
@@ -10,4 +14,4 @@ data class Rover(
     val name: String,
     val status: String,
     val total_photos: Int
-)
+) : Parcelable
