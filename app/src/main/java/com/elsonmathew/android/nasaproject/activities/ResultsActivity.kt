@@ -4,29 +4,37 @@ import android.content.Context
 import android.content.Intent
 import android.os.Bundle
 
-import com.google.android.material.snackbar.Snackbar
 import androidx.appcompat.app.AppCompatActivity
+import androidx.recyclerview.widget.GridLayoutManager
+import androidx.recyclerview.widget.RecyclerView
 import com.elsonmathew.android.nasaproject.R
+import com.elsonmathew.android.nasaproject.adapters.RecyclerViewAdapter
 import com.elsonmathew.android.nasaproject.models.Photo
-
-import kotlinx.android.synthetic.main.activity_results.*
-
+import android.util.Log
+import android.view.View
 
 
 class ResultsActivity : AppCompatActivity() {
+
+    lateinit var adapter: RecyclerViewAdapter
 
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_results)
-        setSupportActionBar(toolbar)
+
+        val recyclerView: RecyclerView = findViewById(R.id.rv_cell)
+        val numColumn = 2
+
+        recyclerView.layoutManager = GridLayoutManager(this, numColumn)
         val photos = intent.getBundleExtra(INTENT_BUNDLE).get(INTENT_PHOTOS) as ArrayList<Photo>
 
-        fab.setOnClickListener { view ->
-            Snackbar.make(view, "Replace with your own action", Snackbar.LENGTH_LONG)
-                .setAction("Action", null).show()
-        }
+        adapter = RecyclerViewAdapter(this, photos)
+        recyclerView.adapter = adapter
+
+
     }
+
 
     companion object {
 
