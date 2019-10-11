@@ -1,7 +1,6 @@
 package com.elsonmathew.android.nasaproject.activities
 
 import android.content.Context
-import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.view.View
@@ -21,12 +20,15 @@ import io.reactivex.disposables.Disposable
 import io.reactivex.schedulers.Schedulers
 import kotlinx.android.synthetic.main.activity_main.*
 import android.widget.ProgressBar
-import java.io.Serializable
+import android.view.inputmethod.InputMethodManager
 
 
 class MainActivity : AppCompatActivity() {
 
 	private lateinit var progressBar: ProgressBar
+	private var isCamSelected: Boolean = false
+	private var isSolSelected: Boolean = false
+	private var isRoverSelected: Boolean = false
 	private var roverDropdown: AutoCompleteTextView? = null
 	private var cam_dropdown: AutoCompleteTextView? = null
 	private var sol_dropdown: AutoCompleteTextView? = null
@@ -93,16 +95,13 @@ class MainActivity : AppCompatActivity() {
 		sol_dropdown = populateSolDropDownMenu(this, R.id.sol_dropdown, (1..photoManifest.max_sol).toList())
 		val randomSol = (1..photoManifest.max_sol).shuffled().first()
 		cam_dropdown = populateDropDownMenu(this, R.id.camera_dropdown, photoManifest.photos[randomSol].cameras)
-		val sol = solTextInputLayout?.editText.toString().toIntOrNull()
-		sol_dropdown?.onItemClickListener = AdapterView.OnItemClickListener{ parent,view,position,id->
-			progressBar.visibility = View.VISIBLE
-			val selectedSol = parent.getItemAtPosition(position) as Int
-			cam_dropdown = populateDropDownMenu(this, R.id.camera_dropdown, photoManifest.photos[selectedSol].cameras)
-			progressBar.visibility = View.INVISIBLE
 
+		sol_dropdown?.onItemClickListener = AdapterView.OnItemClickListener{ parent,view,position,id->
+			populateCamDropDownBasedOnSol(parent, position, photoManifest)
+			showPhotosButton.isEnabled = true
 		}
+
 		camTextInputLayout?.visibility = View.VISIBLE
-		showPhotosButton.isEnabled = true
 
 		showPhotosButton.setOnClickListener {
 			val rover = roverDropdown?.text.toString()
@@ -110,9 +109,33 @@ class MainActivity : AppCompatActivity() {
 			val sol = sol_dropdown?.text.toString()
 
 			beginSearch(rover, camera , sol)
-
+			closeSoftKeyBoard()
 		}
 
+	}
+
+	private fun populateCamDropDownBasedOnSol(
+		parent: AdapterView<*>,
+		position: Int,
+		photoManifest: PhotoManifest
+	) {
+		progressBar.visibility = View.VISIBLE
+		val selectedSol = parent.getItemAtPosition(position) as Int
+		cam_dropdown = populateDropDownMenu(
+			this,
+			R.id.camera_dropdown,
+			photoManifest.photos[selectedSol].cameras
+		)
+		progressBar.visibility = View.INVISIBLE
+		isSolSelected = true
+	}
+
+	private fun closeSoftKeyBoard() {
+		val view = this.currentFocus
+		if (view != null) {
+			val imm = getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
+			imm.hideSoftInputFromWindow(view.windowToken, 0)
+		}
 	}
 
 
@@ -148,21 +171,17 @@ class MainActivity : AppCompatActivity() {
 
 	private fun showError(message: String?) {
 		progressBar.visibility = View.INVISIBLE
-
 		print(message)
-
-
 	}
 
 	private fun showResult(photos: ArrayList<Photo>) {
-		if (photos.isEmpty()) {
-			Toast.makeText(applicationContext,"There are no images for this rover on ${sol_dropdown?.text.toString()} ",Toast.LENGTH_LONG).show()
-		}
 		progressBar.visibility = View.INVISIBLE
 
-		print(photos)
-
-		startActivity(ResultsActivity.getRegisterIntent(this, photos))
+		if (photos.isEmpty()) {
+			Toast.makeText(applicationContext,"There are no images taken by ${cam_dropdown?.text.toString()} camera for ${roverDropdown?.text.toString()} on Sol Day: ${sol_dropdown?.text.toString()} ",Toast.LENGTH_LONG).show()
+		} else {
+			startActivity(ResultsActivity.getRegisterIntent(this, photos))
+		}
 
 	}
 }
